@@ -1,0 +1,99 @@
+#root {
+  min-height: 100vh;
+}
+
+.app {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  min-height: 100vh;
+  background: #0f172a;
+  color: #e2e8f0;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.sidebar {
+  background: #111827;
+  border-right: 1px solid #1f2937;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.sidebar h2 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.sidebar__stats {
+  background: #0b1220;
+  border: 1px solid #1f2937;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  line-height: 1.4;
+}
+
+.sidebar__best {
+  margin-top: 0.5rem;
+}
+
+.file-loader textarea {
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 0.25rem;
+  background: #0b1220;
+  border: 1px solid #1f2937;
+  border-radius: 0.5rem;
+  color: #e2e8f0;
+  padding: 0.5rem;
+}
+
+.file-loader__actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin: 0.5rem 0;
+}
+
+.file-loader__error {
+  color: #fca5a5;
+  font-size: 0.9rem;
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.controls input[type='number'] {
+  margin-left: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  background: #0b1220;
+  border: 1px solid #1f2937;
+  border-radius: 0.4rem;
+  color: #e2e8f0;
+}
+
+button {
+  background: linear-gradient(135deg, #2563eb, #22d3ee);
+  color: #0b1220;
+  border: none;
+  border-radius: 0.6rem;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+.app__main {
+  position: relative;
+}
+
+.map-view {
+  width: 100%;
+  height: 100vh;
+}
