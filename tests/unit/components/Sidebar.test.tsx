@@ -42,8 +42,8 @@ describe('Sidebar', () => {
       />
     )
 
-    expect(screen.getByText(/3 件/)).toBeInTheDocument()
-    expect(screen.getByText(/期待値: 4500\.0/)).toBeInTheDocument()
+    expect(screen.getByText(/Points: 3/)).toBeInTheDocument()
+    expect(screen.getByText(/Expected score: 4500\.0/)).toBeInTheDocument()
     expect(screen.getByText(/Lat: 5\.0000 \/ Lng: 10\.0000/)).toBeInTheDocument()
   })
 

@@ -11,7 +11,7 @@ describe('FileLoader', () => {
     const textarea = screen.getByLabelText(/json/i)
     await userEvent.clear(textarea)
     fireEvent.change(textarea, { target: { value: '[{"lat":1,"lng":2}]' } })
-    await userEvent.click(screen.getByRole('button', { name: /読み込む/i }))
+    await userEvent.click(screen.getByRole('button', { name: /Load/i }))
 
     await waitFor(() => {
       expect(onParsed).toHaveBeenCalled()
@@ -25,9 +25,9 @@ describe('FileLoader', () => {
 
     const textarea = screen.getByLabelText(/json/i)
     await userEvent.type(textarea, 'not json')
-    await userEvent.click(screen.getByRole('button', { name: /読み込む/i }))
+    await userEvent.click(screen.getByRole('button', { name: /Load/i }))
 
-    expect(await screen.findByText(/パース/i)).toBeInTheDocument()
+    expect(await screen.findByText(/Failed to parse/i)).toBeInTheDocument()
     expect(onParsed).not.toHaveBeenCalled()
   })
 })

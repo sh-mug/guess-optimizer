@@ -26,14 +26,14 @@ function Controls({
         />
       </label>
       <button type="button" onClick={onComputeBest}>
-        期待値最大地点を計算
+        Compute best location
       </button>
       {typeof heatmapEnabled === 'boolean' && onToggleHeatmap && (
         <label>
-          ヒートマップ
+          Heatmap
           <input
             type="checkbox"
-            aria-label="ヒートマップ"
+            aria-label="Heatmap"
             checked={heatmapEnabled}
             onChange={(e) => onToggleHeatmap(e.target.checked)}
           />

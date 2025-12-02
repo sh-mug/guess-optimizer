@@ -16,7 +16,7 @@ function FileLoader({ onParsed }: FileLoaderProps) {
       onParsed(points)
       setError(null)
     } catch (e) {
-      setError(`パースに失敗しました: ${(e as Error).message}`)
+      setError(`Failed to parse: ${(e as Error).message}`)
     }
   }
 
@@ -34,12 +34,12 @@ function FileLoader({ onParsed }: FileLoaderProps) {
         id="json-text"
         value={text}
         onChange={(e) => setText(e.target.value)}
-        placeholder="GeoGuessr JSON または [ { lat, lng }, ... ]"
+        placeholder="GeoGuessr JSON or [ { lat, lng }, ... ]"
         rows={4}
       />
       <div className="file-loader__actions">
         <button type="button" onClick={() => parseAndEmit(text)}>
-          読み込む
+          Load
         </button>
         <input type="file" accept="application/json" onChange={handleFileChange} />
       </div>

@@ -21,7 +21,7 @@ describe('Controls', () => {
       <Controls K={0.01} onChangeK={vi.fn()} onComputeBest={onComputeBest} />
     )
 
-    await userEvent.click(screen.getByRole('button', { name: /期待値最大地点/i }))
+    await userEvent.click(screen.getByRole('button', { name: /Compute best/i }))
     expect(onComputeBest).toHaveBeenCalled()
   })
 
@@ -37,7 +37,7 @@ describe('Controls', () => {
       />
     )
 
-    const toggle = screen.getByLabelText(/ヒートマップ/)
+    const toggle = screen.getByLabelText(/Heatmap/)
     await userEvent.click(toggle)
     expect(onToggle).toHaveBeenCalledWith(true)
   })

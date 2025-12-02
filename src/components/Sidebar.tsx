@@ -21,19 +21,19 @@ function Sidebar({
 }: SidebarProps) {
   return (
     <aside className="sidebar">
-      <h2>GeoGuessr 期待値シミュレータ</h2>
+      <h2>GeoGuessr Expectation Simulator</h2>
       <div className="sidebar__stats">
-        <div>候補点: {pointsCount} 件</div>
+        <div>Points: {pointsCount}</div>
         {bestResult ? (
           <div className="sidebar__best">
-            <div>期待値最大地点</div>
+            <div>Best expectation point</div>
             <div>
               Lat: {bestResult.bestLat.toFixed(4)} / Lng: {bestResult.bestLng.toFixed(4)}
             </div>
-            <div>期待値: {bestResult.bestScore.toFixed(1)}</div>
+            <div>Expected score: {bestResult.bestScore.toFixed(1)}</div>
           </div>
         ) : (
-          <div className="sidebar__best">まだ計算されていません</div>
+          <div className="sidebar__best">Not computed yet</div>
         )}
       </div>
 

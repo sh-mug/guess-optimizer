@@ -37,9 +37,9 @@ describe('App', () => {
     fireEvent.change(textarea, {
       target: { value: '[{"lat":1,"lng":2},{"lat":3,"lng":4}]' },
     })
-    await userEvent.click(screen.getByRole('button', { name: /読み込む/i }))
+    await userEvent.click(screen.getByRole('button', { name: /Load/i }))
 
-    expect(await screen.findByText(/2 件/)).toBeInTheDocument()
+    expect(await screen.findByText(/Points: 2/)).toBeInTheDocument()
   })
 
   it('computes best expectation via worker', async () => {
@@ -50,18 +50,18 @@ describe('App', () => {
     fireEvent.change(textarea, {
       target: { value: '[{"lat":0,"lng":0},{"lat":0,"lng":5}]' },
     })
-    await userEvent.click(screen.getByRole('button', { name: /読み込む/i }))
+    await userEvent.click(screen.getByRole('button', { name: /Load/i }))
 
-    await userEvent.click(screen.getByRole('button', { name: /期待値最大地点を計算/i }))
+    await userEvent.click(screen.getByRole('button', { name: /Compute best/i }))
 
     await waitFor(() => {
-      expect(screen.getByText(/期待値:/)).toBeInTheDocument()
+      expect(screen.getByText(/Expected score:/)).toBeInTheDocument()
     })
   })
 
   it('adds a point from map interaction', async () => {
     render(<App />)
     await userEvent.click(screen.getByText('mock-map-add'))
-    expect(await screen.findByText(/1 件/)).toBeInTheDocument()
+    expect(await screen.findByText(/Points: 1/)).toBeInTheDocument()
   })
 })
