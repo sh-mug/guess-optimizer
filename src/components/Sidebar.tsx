@@ -9,6 +9,8 @@ interface SidebarProps {
   onParsedPoints: (points: PointMeta[]) => void
   onChangeK: (K: number) => void
   onComputeBest: () => void
+  heatmapEnabled?: boolean
+  onToggleHeatmap?: (enabled: boolean) => void
 }
 
 function Sidebar({
@@ -18,6 +20,8 @@ function Sidebar({
   onParsedPoints,
   onChangeK,
   onComputeBest,
+  heatmapEnabled,
+  onToggleHeatmap,
 }: SidebarProps) {
   return (
     <aside className="sidebar">
@@ -38,7 +42,13 @@ function Sidebar({
       </div>
 
       <FileLoader onParsed={onParsedPoints} />
-      <Controls K={K} onChangeK={onChangeK} onComputeBest={onComputeBest} />
+      <Controls
+        K={K}
+        onChangeK={onChangeK}
+        onComputeBest={onComputeBest}
+        heatmapEnabled={heatmapEnabled}
+        onToggleHeatmap={onToggleHeatmap}
+      />
     </aside>
   )
 }

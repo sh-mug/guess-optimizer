@@ -1,16 +1,22 @@
 import { useEffect, useRef, useState } from 'react'
 import maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
-import { type PointMeta } from '../lib/types'
+import { type HeatmapSample, type PointMeta } from '../lib/types'
 
 interface MapViewProps {
   points: PointMeta[]
   bestPoint?: { lat: number; lng: number } | null
   onAddPoint?: (lat: number, lng: number) => void
+  heatmapSamples?: HeatmapSample[]
+  onViewportChange?: (viewport: {
+    bounds: { minLat: number; maxLat: number; minLng: number; maxLng: number }
+    zoom: number
+  }) => void
 }
 
 const POINTS_SOURCE = 'points'
 const BEST_POINT_SOURCE = 'best-point'
+const HEATMAP_SOURCE = 'heatmap'
 
 function pointsToGeoJson(points: PointMeta[]) {
   return {
@@ -48,7 +54,41 @@ function bestPointToGeoJson(bestPoint?: { lat: number; lng: number } | null) {
   }
 }
 
-function MapView({ points, bestPoint, onAddPoint }: MapViewProps) {
+function heatmapToGeoJson(samples?: HeatmapSample[]) {
+  return {
+    type: 'FeatureCollection' as const,
+    features:
+      samples?.map((s, idx) => ({
+        type: 'Feature' as const,
+        geometry: {
+          type: 'Point' as const,
+          coordinates: [s.lng, s.lat],
+        },
+        properties: { value: s.value, id: idx },
+      })) ?? [],
+  }
+}
+
+function toViewportPayload(map: maplibregl.Map) {
+  const b = map.getBounds()
+  return {
+    bounds: {
+      minLat: b.getSouth(),
+      maxLat: b.getNorth(),
+      minLng: b.getWest(),
+      maxLng: b.getEast(),
+    },
+    zoom: map.getZoom(),
+  }
+}
+
+function MapView({
+  points,
+  bestPoint,
+  onAddPoint,
+  heatmapSamples,
+  onViewportChange,
+}: MapViewProps) {
   const containerRef = useRef<HTMLDivElement | null>(null)
   const mapRef = useRef<maplibregl.Map | null>(null)
   const [loaded, setLoaded] = useState(false)
@@ -66,6 +106,7 @@ function MapView({ points, bestPoint, onAddPoint }: MapViewProps) {
 
     map.on('load', () => {
       setLoaded(true)
+      onViewportChange?.(toViewportPayload(map))
       map.addSource(POINTS_SOURCE, {
         type: 'geojson',
         data: pointsToGeoJson(points),
@@ -97,10 +138,38 @@ function MapView({ points, bestPoint, onAddPoint }: MapViewProps) {
           'circle-stroke-width': 1.5,
         },
       })
+
+      map.addSource(HEATMAP_SOURCE, {
+        type: 'geojson',
+        data: heatmapToGeoJson(heatmapSamples),
+      })
+      map.addLayer({
+        id: 'heatmap-layer',
+        type: 'heatmap',
+        source: HEATMAP_SOURCE,
+        paint: {
+          'heatmap-weight': [
+            'interpolate',
+            ['linear'],
+            ['get', 'value'],
+            0,
+            0,
+            5000,
+            1,
+          ],
+          'heatmap-intensity': 1,
+          'heatmap-radius': 20,
+          'heatmap-opacity': 0.7,
+        },
+      })
     })
 
     map.on('click', (e) => {
       onAddPoint?.(e.lngLat.lat, e.lngLat.lng)
+    })
+
+    map.on('moveend', () => {
+      onViewportChange?.(toViewportPayload(map))
     })
 
     mapRef.current = map
@@ -123,6 +192,14 @@ function MapView({ points, bestPoint, onAddPoint }: MapViewProps) {
     ) as maplibregl.GeoJSONSource
     source?.setData(bestPointToGeoJson(bestPoint))
   }, [bestPoint, loaded])
+
+  useEffect(() => {
+    if (!loaded || !mapRef.current) return
+    const source = mapRef.current.getSource(
+      HEATMAP_SOURCE
+    ) as maplibregl.GeoJSONSource
+    source?.setData(heatmapToGeoJson(heatmapSamples))
+  }, [heatmapSamples, loaded])
 
   return <div data-testid="map-view" className="map-view" ref={containerRef} />
 }

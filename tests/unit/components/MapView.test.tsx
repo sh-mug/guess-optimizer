@@ -11,6 +11,21 @@ class MockMap {
   removeLayer = vi.fn()
   removeSource = vi.fn()
   remove = vi.fn()
+  bounds = {
+    getNorth: () => 10,
+    getSouth: () => -10,
+    getEast: () => 20,
+    getWest: () => -20,
+  }
+  zoom = 3
+
+  getBounds() {
+    return this.bounds
+  }
+
+  getZoom() {
+    return this.zoom
+  }
 
   on(event: string, handler: (ev: any) => void) {
     this.handlers[event] = this.handlers[event] || []
@@ -62,6 +77,8 @@ const samplePoints: PointMeta[] = [
   { id: '2', lat: 10, lng: 10, source: 'click' },
 ]
 
+const heatmapSamples = [{ lat: 0, lng: 0, value: 1000 }]
+
 describe('MapView', () => {
   it('renders map container', () => {
     const { getByTestId } = render(<MapView points={[]} />)
@@ -86,5 +103,34 @@ describe('MapView', () => {
     const sourceAfter = getLastMap().getSource('points')
     expect(sourceAfter.setData).toHaveBeenCalled()
     expect(sourceAfter.data.features).toHaveLength(2)
+  })
+
+  it('notifies viewport changes', () => {
+    const onViewportChange = vi.fn()
+    render(<MapView points={[]} onViewportChange={onViewportChange} />)
+
+    const map = getLastMap()
+    map.bounds = {
+      getNorth: () => 5,
+      getSouth: () => -5,
+      getEast: () => 15,
+      getWest: () => -15,
+    }
+    map.zoom = 6
+    map.trigger('moveend', { target: map })
+
+    expect(onViewportChange).toHaveBeenCalledWith({
+      bounds: { maxLat: 5, minLat: -5, maxLng: 15, minLng: -15 },
+      zoom: 6,
+    })
+  })
+
+  it('updates heatmap source when samples change', () => {
+    const { rerender } = render(<MapView points={[]} />)
+    rerender(<MapView points={[]} heatmapSamples={heatmapSamples} />)
+
+    const heatSource = getLastMap().getSource('heatmap')
+    expect(heatSource.setData).toHaveBeenCalled()
+    expect(heatSource.data.features).toHaveLength(1)
   })
 })

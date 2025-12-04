@@ -15,13 +15,16 @@ vi.mock('../../../src/components/Controls', () => ({
   default: ({
     onChangeK,
     onComputeBest,
+    onToggleHeatmap,
   }: {
     onChangeK: (k: number) => void
     onComputeBest: () => void
+    onToggleHeatmap?: (enabled: boolean) => void
   }) => (
     <div>
       <button onClick={() => onChangeK(0.02)}>mock-change-k</button>
       <button onClick={onComputeBest}>mock-compute</button>
+      <button onClick={() => onToggleHeatmap?.(true)}>mock-heatmap</button>
     </div>
   ),
 }))
@@ -51,6 +54,7 @@ describe('Sidebar', () => {
     const onParsed = vi.fn()
     const onChangeK = vi.fn()
     const onComputeBest = vi.fn()
+    const onToggleHeatmap = vi.fn()
     render(
       <Sidebar
         pointsCount={0}
@@ -59,15 +63,19 @@ describe('Sidebar', () => {
         onParsedPoints={onParsed}
         onChangeK={onChangeK}
         onComputeBest={onComputeBest}
+        heatmapEnabled={false}
+        onToggleHeatmap={onToggleHeatmap}
       />
     )
 
     await userEvent.click(screen.getByText('mock-file-loader'))
     await userEvent.click(screen.getByText('mock-change-k'))
     await userEvent.click(screen.getByText('mock-compute'))
+    await userEvent.click(screen.getByText('mock-heatmap'))
 
     expect(onParsed).toHaveBeenCalledWith(mockParsedPoints)
     expect(onChangeK).toHaveBeenCalledWith(0.02)
     expect(onComputeBest).toHaveBeenCalled()
+    expect(onToggleHeatmap).toHaveBeenCalledWith(true)
   })
 })
