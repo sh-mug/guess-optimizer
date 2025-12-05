@@ -1,73 +1,94 @@
-# React + TypeScript + Vite
+# Guess Optimizer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**GeoGuessr Expectation Simulator**
 
-Currently, two official plugins are available:
+[Live Demo](http://mug.sh/guess-optimizer/)  
+[GitHub Repository](https://github.com/sh-mug/guess-optimizer)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Overview
 
-## React Compiler
+Guess Optimizer is an expectation simulator for the popular geography game GeoGuessr. It is designed to analyze and optimize guessing strategies by simulating various guess scenarios, providing insights into potential outcomes based on location, distances, and scores.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Features
 
-## Expanding the ESLint configuration
+- **GeoGuessr Simulation**: Simulate guess placements and evaluate expected scores across different locations.
+- **Score Analysis**: Calculate expected scores based on user-defined guess strategies.
+- **Strategy Optimization**: Experiment with different approaches to maximize expected points.
+- **Customizable Inputs**: Adjust simulation parameters for fine-tuned results.
+- **Interactive Web Interface**: Intuitive web-based UI for easy experimentation and visualization.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Getting Started
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Prerequisites
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- [Node.js](https://nodejs.org/) (latest LTS recommended)
+- [pnpm](https://pnpm.io/) or npm/yarn
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Installation
+
+1. Clone this repository:
+    ```bash
+    git clone https://github.com/sh-mug/guess-optimizer.git
+    cd guess-optimizer
+    ```
+
+2. Install dependencies:
+    ```bash
+    pnpm install
+    # or
+    npm install
+    ```
+
+### Usage
+
+#### Development Server
+
+Start the local development server:
+```bash
+pnpm dev
+# or
+npm run dev
+```
+Visit `http://localhost:5173` in your browser.
+
+#### Production Build
+
+Create a production build:
+```bash
+pnpm build
+# or
+npm run build
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Serve the built files:
+```bash
+pnpm preview
+# or
+npm run preview
 ```
+
+### Running Tests
+
+You may run available tests using:
+```bash
+pnpm test
+# or
+npm run test
+```
+
+## Project Structure
+
+- `src/` – Source code including core logic and components
+- `public/` – Static assets
+- `scripts/` – Utility and support scripts
+- `tests/` – Unit and integration tests
+- `index.html` – Main HTML entry point
+- `vite.config.ts` – Build and dev server configuration
+
+## License
+
+This project currently does not define a license. Please contact the repository owner for usage details.
+
+## Author
+
+- [sh-mug](https://github.com/sh-mug)
